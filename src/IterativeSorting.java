@@ -32,7 +32,7 @@ public class IterativeSorting {
 
     public static void bubbleSort(int[] arr){
         for (int i = 0; i < arr.length-1; i++) {
-            for (int j = 0; j < i; j++) {
+            for (int j = 0; j < arr.length-1; j++) {
                 if(arr[j+1] < arr[j]){
                     int temp = arr[j];
                     arr[j] = arr[j + 1];
@@ -43,5 +43,17 @@ public class IterativeSorting {
             }
         }
         System.out.println("Number of swaps: " + swaps);
+    }
+
+    public static void insertionSort(int[] arr){
+        int key;
+        for (int i = 1; i < arr.length-1; i++) {
+
+            key = arr[i];
+
+            for (int j = arr.length-1; j >= 0 && arr[j] > key; j--) {
+
+            }
+        }
     }
 }
