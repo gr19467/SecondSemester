@@ -86,7 +86,47 @@ public class RecursiveSorting {
 
     ///endregion
 
-    ///region
+    ///region Heap
+    public static void heapSort(int[] arr){
+        int size = arr.length;
 
+        for (int i = size/2 - 1; i < arr.length; i++) {
+            heapify(arr,size,i);
+        }
+
+        for (int heapSize = size - 1; heapSize > 0; heapSize--) {
+            int temp = arr[arr.length - 1];
+            arr[arr.length - 1] = arr[0];
+            arr[0] = temp;
+
+            heapify(arr,heapSize,0);
+        }
+    }
+
+    private static void heapify(int[] arr, int size, int max){
+        int i = max;
+            int l = 2*i + 1;
+            int r = 2*i + 2;
+
+            if(l < size && arr[l] > arr[i]){
+                max = arr[l];
+            }else{
+                max = arr[i];
+            }
+
+            if (r < size && arr[r] > arr[i]){
+                max = arr[r];
+            }else{
+                max = arr[i];
+            }
+
+            if(arr[i] != max){
+                int temp = arr[i];
+                arr[i] = max;
+                max = temp;
+
+                heapify(arr,size,max);
+            }
+    }
     ///endregion
 }
