@@ -90,43 +90,72 @@ public class RecursiveSorting {
     public static void heapSort(int[] arr){
         int size = arr.length;
 
-        for (int i = size/2 - 1; i < arr.length; i++) {
+        for (int i = size/2 - 1; i >= 0; i--) {
             heapify(arr,size,i);
         }
 
-        for (int heapSize = size - 1; heapSize > 0; heapSize--) {
-            int temp = arr[arr.length - 1];
-            arr[arr.length - 1] = arr[0];
-            arr[0] = temp;
+        for (int heapSize = size - 1; heapSize >= 0; heapSize--) {
+            int temp = arr[0];
+            arr[0] = arr[heapSize];
+            arr[heapSize] = temp;
 
             heapify(arr,heapSize,0);
         }
     }
 
-    private static void heapify(int[] arr, int size, int max){
-        int i = max;
+    private static void heapify(int[] arr, int size, int i){
+        int largest = i;
             int l = 2*i + 1;
             int r = 2*i + 2;
 
-            if(l < size && arr[l] > arr[i]){
-                max = arr[l];
-            }else{
-                max = arr[i];
+            if(l < size && arr[l] > arr[largest]){
+                largest = l;
             }
 
-            if (r < size && arr[r] > arr[i]){
-                max = arr[r];
-            }else{
-                max = arr[i];
+            if (r < size && arr[r] > arr[largest]){
+                largest = r;
             }
 
-            if(arr[i] != max){
+            if(largest != i){
                 int temp = arr[i];
-                arr[i] = max;
-                max = temp;
+                arr[i] = arr[largest];
+                arr[largest] = temp;
 
-                heapify(arr,size,max);
+                heapify(arr,size,largest);
             }
     }
+    ///endregion
+
+    ///region Quick
+    public static void quickSort(int[] arr, int firstIndex, int lastIndex){
+        if(firstIndex < lastIndex){
+            int p = partition(arr, firstIndex, lastIndex);
+            quickSort(arr, firstIndex, p - 1);
+            quickSort(arr, p + 1, lastIndex);
+        }
+    }
+
+    private static int partition(int[] arr, int firstIndex, int lastIndex){
+        int pivot = arr[lastIndex];
+
+        int i = firstIndex-1;
+
+        for (int j = firstIndex; j <= lastIndex - 1; j++) {
+            if(arr[j] <= pivot){
+                i++;
+
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[lastIndex];
+        arr[lastIndex] = temp;
+
+        return i + 1;
+    }
+
     ///endregion
 }
