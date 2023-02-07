@@ -1,12 +1,17 @@
 public class Main{
 
     public static void main(String[] args) {
-        int[] arr = {1,7,4,9,12,3,5};
+        DataManager arr = new DataManager();
+        MedicalRecord one = new MedicalRecord(1, "Jane", "Smith");
+        MedicalRecord two = new MedicalRecord(2, "Christopher", "McAllister");
+        MedicalRecord three = new MedicalRecord(3, "Robert", "Downey");
+        MedicalRecord four = new MedicalRecord(4, "Scarlett", "Johanssen");
 
-        RecursiveSorting.quickSort(arr, 0, arr.length-1);
+        arr.addRecord(one);
+        arr.addRecord(two);
+        arr.addRecord(three);
+        arr.addRecord(four);
 
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i]);
-        }
+        DataManager.printRecords(arr);
      }
 }

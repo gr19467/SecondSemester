@@ -19,6 +19,7 @@ public class DataManager {
     //done
     private static int lastPatient(){
         int i = 0;
+
         while(records[i + 1] != null){
             i++;
         }
@@ -26,24 +27,17 @@ public class DataManager {
         return i;
     }
 
+    //done
     public void removeRecord(MedicalRecord mr){
+        sortRecords();
 
-        for (int i = 0; i < records.length; i++) {
+        int remove = getRecordIndex(mr.getlName(), mr.getlName());
 
-            if(records[i].getId() == mr.getId()){
+        int i = remove;
 
-                records[i] = null;
-
-                for (int j = records.length-1; j >= i; j--) {
-
-                    records[j-1] = records[j];
-
-                }
-
-                break;
-            }
+        while(records[i] != null){
+            records[i] = records[i + 1];
         }
-
     }
 
     //done
@@ -103,7 +97,7 @@ public class DataManager {
             quickSort(arr, firstIndex, p - 1);
             quickSort(arr, p + 1, lastIndex);
         }
-        for (int i = 0; i < arr.length-1; i++) {
+        for (int i = 0; i < lastIndex; i++) {
             if(arr[i].getlName().compareTo(arr[i + 1].getlName()) == 0){
                 if(arr[i].getfName().compareTo(arr[i + 1].getfName()) > 0){
                     MedicalRecord temp = arr[i + 1];
@@ -136,6 +130,10 @@ public class DataManager {
         return i + 1;
     }
 
-
+    public static void printRecords(MedicalRecord[] arr){
+        for (int i = 0; i < lastPatient(); i++) {
+            System.out.println(arr[i].getlName() + ", " + arr[i].getfName());
+        }
+    }
 
 }
