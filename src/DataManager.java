@@ -2,46 +2,65 @@ import java.util.Objects;
 
 public class DataManager {
 
-    private static MedicalRecord[] records;
+    public static MedicalRecord[] records;
 
     public DataManager(){
         records = new MedicalRecord[40];
     }
 
-    //done
-    public void addRecord(MedicalRecord mr){
-        mr = records[lastPatient() + 1];
+    public static void addRecord(MedicalRecord mr){
+        records[lastPatient() + 1] = mr;
 
         //make sure the records are sorted now that a new record has been added
         sortRecords();
     }
 
-    //done
+    /**
+     * Last patient finds the last index that is not null, since .length will return 40.
+     * @return
+     */
     private static int lastPatient(){
         int i = 0;
 
+        //if the index you're on is null, return -1
+        if(records[i] == null){
+            return -1;
+        }
+
+        //if the next index is not null, keep counting
         while(records[i + 1] != null){
             i++;
         }
 
+        //if the next index was null, i is now the last patient
         return i;
     }
 
-    //done
-    public void removeRecord(MedicalRecord mr){
+    /**
+     * Removes a record that is no longer needed by copying on top of that index and moving everything backwards.
+     * @param mr
+     */
+    public static void removeRecord(MedicalRecord mr){
+        //make sure the records are sorted
         sortRecords();
 
-        int remove = getRecordIndex(mr.getlName(), mr.getlName());
+        //get the index we need to remove
+        int remove = getRecordIndex(mr.getlName(), mr.getfName());
 
-        int i = remove;
-
-        while(records[i] != null){
-            records[i] = records[i + 1];
+        //copy over our index, then move all indexes above that backwards
+        while(records[remove] != null){
+            records[remove] = records[remove + 1];
+            remove++;
         }
     }
 
-    //done
-    private int getRecordIndex(String lastName, String firstName){
+    /**
+     * Gets the index of whatever record you're looking for using the last name and first name.
+     * @param lastName
+     * @param firstName
+     * @return
+     */
+    private static int getRecordIndex(String lastName, String firstName){
         //set up for the split
         int leftPointer = 0;
         int rightPointer = lastPatient();
@@ -50,22 +69,29 @@ public class DataManager {
         while(leftPointer <= rightPointer){
             //find the middle index
             int mid = (leftPointer + rightPointer)/2;
+            System.out.println("Mid is " + mid);
 
-            //if the middle index contains the target
-            if(Objects.equals(records[mid], lastName) && Objects.equals(records[mid], firstName)){
+            //if the middle index contains the target last name
+            if(Objects.equals(records[mid].getlName(), lastName)){
+                System.out.println("Last names match.");
+
                 //make sure the first name also matches
-                if (records[mid].getfName().compareTo(firstName) == 0) {
+                if (Objects.equals(records[mid].getfName(),firstName)) {
+                    System.out.println("First names matched, returned " + mid);
                     return mid;
                 }else{
+                    System.out.println("First names did not match.");
                     //move the pointers
                     if((records[mid].getfName().compareTo(firstName)) > 0){
                         //left half
                         rightPointer = mid-1;
+                        System.out.println("First name comes before mid: " + records[mid].getfName() + " vs. " + firstName);
                     }
 
                     if((records[mid].getfName().compareTo(firstName)) < 0){
                         //right half
                         leftPointer = mid+1;
+                        System.out.println("First name comes after mid: " + records[mid].getfName() + " vs. " + firstName);
                     }
                 }
             }
@@ -73,12 +99,14 @@ public class DataManager {
             //move the pointers
             if((records[mid].getlName().compareTo(lastName)) > 0){
                 //left half
-                rightPointer = mid-1;
+                rightPointer = mid - 1;
+                System.out.println("Last name comes before mid: " + records[mid].getlName() + " vs. " + lastName);
             }
 
             if((records[mid].getlName().compareTo(lastName)) < 0){
                 //right half
                 leftPointer = mid+1;
+                System.out.println("Last name comes after mid: " + records[mid].getlName() + " vs. " + lastName);
             }
 
         }
@@ -86,11 +114,20 @@ public class DataManager {
         return -1;
     }
 
-    //done
-    public void sortRecords(){
+    ///region Sorting Methods
+    /**
+     * Uses quick sort to sort the records by last name, then by first name if needed.
+     */
+    public static void sortRecords(){
         quickSort(records, 0, lastPatient());
     }
 
+    /**
+     * A quick sort algorithm.
+     * @param arr
+     * @param firstIndex
+     * @param lastIndex
+     */
     private static void quickSort(MedicalRecord[] arr, int firstIndex, int lastIndex){
         if(firstIndex < lastIndex){
             int p = partition(arr, firstIndex, lastIndex);
@@ -108,6 +145,13 @@ public class DataManager {
         }
     }
 
+    /**
+     * The helper method for quick sort.
+     * @param arr
+     * @param firstIndex
+     * @param lastIndex
+     * @return
+     */
     private static int partition(MedicalRecord[] arr, int firstIndex, int lastIndex){
         MedicalRecord pivot = arr[lastPatient()];
 
@@ -129,9 +173,14 @@ public class DataManager {
 
         return i + 1;
     }
+    ///endregion
 
-    public static void printRecords(MedicalRecord[] arr){
-        for (int i = 0; i < lastPatient(); i++) {
+    /**
+     * Prints each record in the format "last name, first name".
+     * @param arr
+     */
+    public static void printRecords(MedicalRecord[] arr) {
+        for (int i = 0; i <= lastPatient(); i++) {
             System.out.println(arr[i].getlName() + ", " + arr[i].getfName());
         }
     }

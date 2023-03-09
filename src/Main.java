@@ -12,6 +12,8 @@ public class Main{
         arr.addRecord(three);
         arr.addRecord(four);
 
-        DataManager.printRecords(arr);
+        for (int i = 0; i < 4; i++) {
+            DataManager.printRecords(DataManager.records);
+        }
      }
 }
